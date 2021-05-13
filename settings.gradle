@@ -1,0 +1,2 @@
+rootProject.name = "kotlin-MVVM-architecture"
+include ':app'
