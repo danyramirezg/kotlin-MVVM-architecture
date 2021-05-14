@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.dany.kotlin_mvvm_architecture.R
 
-class ListFragment : Fragment() {
+
+class DetailFragment : Fragment() {
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
-		return inflater.inflate(R.layout.fragment_list, container, false)
+		return inflater.inflate(R.layout.fragment_detail, container, false)
 	}
+
+
 }
