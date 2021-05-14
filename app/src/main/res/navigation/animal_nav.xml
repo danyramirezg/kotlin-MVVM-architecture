@@ -9,7 +9,7 @@
 		android:id="@+id/listFragment"
 		android:name="com.dany.kotlin_mvvm_architecture.view.ListFragment"
 		android:label="fragment_list"
-		tools:layout="@layout/fragment_list" >
+		tools:layout="@layout/fragment_list">
 		<action
 			android:id="@+id/actionDetail"
 			app:destination="@id/detailFragment" />
