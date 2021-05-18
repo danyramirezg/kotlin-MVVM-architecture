@@ -3,6 +3,7 @@ package com.dany.kotlin_mvvm_architecture.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.dany.kotlin_mvvm_architecture.R
 import com.dany.kotlin_mvvm_architecture.model.Animal
@@ -30,6 +31,10 @@ class AnimalListAdapter(private val animalList: ArrayList<Animal>):
 	override fun onBindViewHolder(holder: AnimalViewHolder, position: Int) {
 		holder.itemView.animalName.text = animalList[position].name
 		holder.itemView.animalImage.loadImage(animalList[position].imageUrl, getProgressDrawable(holder.itemView.context))
+		holder.itemView.animalLayout.setOnClickListener {
+			val action = ListFragmentDirections.actionDetail(animalList[position])
+			Navigation.findNavController(holder.itemView).navigate(action)
+		}
 	}
 
 	override fun getItemCount(): Int {
