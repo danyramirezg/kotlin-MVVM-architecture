@@ -17,10 +17,10 @@ class AnimalApiService {
 		.create(AnimalApi::class.java)
 
 	fun getApiKey(): Single<ApiKey> {
-		return api.getApiKey()
+		return api.getApiKeyEndPoint()
 	}
 
 	fun getAnimals(key: String): Single<List<Animal>>{
-		return api.getAnimals(key)
+		return api.getAnimalsEndPoint(key)
 	}
 }
