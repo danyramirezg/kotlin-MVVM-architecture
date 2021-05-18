@@ -15,11 +15,13 @@ import com.bumptech.glide.request.transition.Transition
 import com.dany.kotlin_mvvm_architecture.R
 import com.dany.kotlin_mvvm_architecture.databinding.FragmentDetailBinding
 import com.dany.kotlin_mvvm_architecture.model.Animal
+import com.dany.kotlin_mvvm_architecture.model.AnimalPalette
 
 
 class DetailFragment : Fragment() {
 
 	var animal: Animal? = null
+	var backgroundColor: Int? = null
 	private  lateinit var dataBinding: FragmentDetailBinding
 
 	override fun onCreateView(
@@ -62,7 +64,9 @@ class DetailFragment : Fragment() {
 					// -> resource is the bitmap from the image we load before
 					Palette.from(resource).generate { palette ->
 							val intColor = palette?.lightMutedSwatch?.rgb ?: 0
-							dataBinding.animalLayout.setBackgroundColor(intColor)
+
+							// Pass the AnimalPalette object to dataBinging for the view
+							dataBinding.palette = AnimalPalette(intColor)
 						}
 				}
 

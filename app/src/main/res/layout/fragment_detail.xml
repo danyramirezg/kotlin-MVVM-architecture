@@ -4,20 +4,24 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools">
 
-<!--	When adding dataBinding important to-->
-<!--	rebuild the code-->
+<!--	When adding dataBinding variables or data important to-->
+<!--	rebuild the project -->
 	<data>
 		<variable
 			name="animal"
 			type="com.dany.kotlin_mvvm_architecture.model.Animal" />
+		
+		<variable
+			name="palette"
+			type="com.dany.kotlin_mvvm_architecture.model.AnimalPalette" />
 	</data>
 
 	<LinearLayout
-		android:id="@+id/animalLayout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		tools:context=".view.DetailFragment"
 		android:orientation="vertical"
+		android:background="@{palette.color}"
 		android:gravity="center_horizontal"
 		>
 
