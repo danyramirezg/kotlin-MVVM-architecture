@@ -62,11 +62,12 @@ class ListFragment : Fragment() {
 		}
 
 		// Spinning loading Bar when SwipeRefreshLayout in fragment_list.xml
+		//here the refresh will call hardRefresh which changes the API key
 		refreshLayout.setOnRefreshListener {
 			animalList.visibility = View.GONE
 			listError.visibility = View.GONE
 			loadingView.visibility = View.VISIBLE
-			viewModel.refresh()
+			viewModel.hardRefresh()
 			refreshLayout.isRefreshing = false
 		}
 	}
