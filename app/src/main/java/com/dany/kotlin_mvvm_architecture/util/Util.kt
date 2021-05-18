@@ -1,7 +1,9 @@
 package com.dany.kotlin_mvvm_architecture.util
 
 import android.content.Context
+import android.view.View
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -28,4 +30,10 @@ fun ImageView.loadImage(uri: String?, progressDrawable:  CircularProgressDrawabl
 		.load(uri)
 		.into(this)
 
+}
+
+// Load the image with dataBinding
+@BindingAdapter("android:imageUrl")
+fun loadImage(view: ImageView, url: String?) {
+	view.loadImage(url, getProgressDrawable(view.context))
 }

@@ -21,6 +21,7 @@ data class Animal(
 
 	@SerializedName("image")
 	val imageUrl: String?
+
 ): Parcelable {
 	constructor(parcel: Parcel) : this(
 		parcel.readString(),
