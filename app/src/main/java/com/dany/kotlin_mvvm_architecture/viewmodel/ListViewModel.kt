@@ -3,8 +3,7 @@ package com.dany.kotlin_mvvm_architecture.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.dany.kotlin_mvvm_architecture.di.AppModule
-import com.dany.kotlin_mvvm_architecture.di.DaggerViewModelComponent
+import com.dany.kotlin_mvvm_architecture.di.*
 import com.dany.kotlin_mvvm_architecture.model.Animal
 import com.dany.kotlin_mvvm_architecture.model.AnimalApiService
 import com.dany.kotlin_mvvm_architecture.model.ApiKey
@@ -29,6 +28,9 @@ class ListViewModel(application: Application): AndroidViewModel(application) {
 	lateinit var apiService : AnimalApiService
 
 	@Inject
+	//@field:TypeOfContext(CONTEXT_APP) <- I think it is not
+	// necessary to use "field:" anymore
+	@TypeOfContext(CONTEXT_APP)
 	lateinit var prefs: SharedPreferencesHelper
 
 	private var invalidApiKey = false
