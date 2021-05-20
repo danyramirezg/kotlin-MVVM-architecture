@@ -3,6 +3,7 @@ package com.dany.kotlin_mvvm_architecture.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.dany.kotlin_mvvm_architecture.di.AppModule
 import com.dany.kotlin_mvvm_architecture.di.DaggerViewModelComponent
 import com.dany.kotlin_mvvm_architecture.model.Animal
 import com.dany.kotlin_mvvm_architecture.model.AnimalApiService
@@ -27,12 +28,21 @@ class ListViewModel(application: Application): AndroidViewModel(application) {
 	@Inject
 	lateinit var apiService : AnimalApiService
 
-	private val prefs = SharedPreferencesHelper(getApplication())
+	@Inject
+	lateinit var prefs: SharedPreferencesHelper
 
 	private var invalidApiKey = false
 
 	init {
-		DaggerViewModelComponent.create().inject(this)
+		// DaggerViewModelComponent.create().inject(this) -> doesn't work
+		// anymore because appModule needs an application
+		// and appModule is a injection Module in the viewModelComponent
+		// Instead we use builder()
+
+		DaggerViewModelComponent.builder()
+			.appModule(AppModule(getApplication()))
+			.build()
+			.inject(this)
 	}
 
 	// Store the key into the sharedPreferences File, so
