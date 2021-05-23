@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.dany.kotlin_mvvm_architecture.Util.SharedPreferencesHelper
 import com.dany.kotlin_mvvm_architecture.model.Animal
 import com.dany.kotlin_mvvm_architecture.model.AnimalApiService
 import com.dany.kotlin_mvvm_architecture.model.ApiKey
@@ -26,7 +27,23 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     private val disposable = CompositeDisposable()
     private val apiService = AnimalApiService()
 
+    private val prefs = SharedPreferencesHelper(getApplication())
+
+    private var invalidApiKey = false
+
     fun refresh() {
+        loading.value = true
+        invalidApiKey = false
+        val key = prefs.getApiKey()
+        if (key.isNullOrEmpty()) {
+            getKey()
+        } else {
+            getAnimals(key)
+        }
+    }
+
+    // Refresh our API key
+    fun hardRefresh(){
         loading.value = true
         getKey()
     }
@@ -45,6 +62,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
                             loadError.value = true
                             loading.value = false
                         } else {
+                            prefs.saveApiKey(key.key)
                             getAnimals(key.key)
                         }
                     }
@@ -74,12 +92,16 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
                     }
 
                     override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        loading.value = false
-                        animals.value = null
-                        loadError.value = true
+                        if (!invalidApiKey) {
+                            invalidApiKey = true
+                            getKey()
+                        } else {
+                            e.printStackTrace()
+                            loading.value = false
+                            animals.value = null
+                            loadError.value = true
+                        }
                     }
-
                 })
         )
     }
