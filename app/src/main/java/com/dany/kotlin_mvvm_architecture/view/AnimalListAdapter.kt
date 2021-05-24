@@ -3,6 +3,8 @@ package com.dany.kotlin_mvvm_architecture.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.dany.kotlin_mvvm_architecture.R
 import com.dany.kotlin_mvvm_architecture.Util.getProgressDrawable
@@ -35,6 +37,10 @@ class AnimalListAdapter(private val animalList: ArrayList<Animal>) :
         holder.view.animalName.text = animalList[position].name
         holder.view.animalImage.loadImage(animalList[position].imageUrl,
             getProgressDrawable(holder.view.context))
+        holder.view.animalLayout.setOnClickListener{
+            val action: NavDirections = ListFragmentDirections.actionDetail(animalList[position])
+            Navigation.findNavController(holder.view).navigate(action)
+        }
     }
 
     class AnimalViewHolder(var view: View) : RecyclerView.ViewHolder(view) {

@@ -8,17 +8,39 @@ import android.view.ViewGroup
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.dany.kotlin_mvvm_architecture.R
+import com.dany.kotlin_mvvm_architecture.Util.getProgressDrawable
+import com.dany.kotlin_mvvm_architecture.Util.loadImage
+import com.dany.kotlin_mvvm_architecture.model.Animal
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_list.*
 
 
 class DetailFragment : Fragment() {
 
+    var animal: Animal? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_detail, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        arguments?.let {
+            animal = DetailFragmentArgs.fromBundle(it).animal
+        }
+
+        context?.let {
+            animalImage.loadImage(animal?.imageUrl, getProgressDrawable(it))
+        }
+
+        animalName.text = animal?.name
+        animalLocation.text = animal?.location
+        animalLifespan.text = animal?.lifeSpan
+        animalDiet.text = animal?.diet
     }
 
 }
