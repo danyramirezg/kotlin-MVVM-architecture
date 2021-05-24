@@ -4,10 +4,10 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-            android:id="@+id/animalLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
+            android:background="@{palette.color}"
             android:orientation="vertical"
             tools:context=".view.DetailFragment">
 
@@ -53,6 +53,9 @@
                 name="animal"
                 type="com.dany.kotlin_mvvm_architecture.model.Animal" />
 
+        <variable
+                name="palette"
+                type="com.dany.kotlin_mvvm_architecture.model.AnimalPalette" />
     </data>
 
 </layout>

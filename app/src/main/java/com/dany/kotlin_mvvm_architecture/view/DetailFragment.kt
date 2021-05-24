@@ -19,6 +19,7 @@ import com.dany.kotlin_mvvm_architecture.Util.getProgressDrawable
 import com.dany.kotlin_mvvm_architecture.Util.loadImage
 import com.dany.kotlin_mvvm_architecture.databinding.FragmentDetailBinding
 import com.dany.kotlin_mvvm_architecture.model.Animal
+import com.dany.kotlin_mvvm_architecture.model.AnimalPalette
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_list.*
 
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_list.*
 class DetailFragment : Fragment() {
 
     var animal: Animal? = null
+
     private lateinit var dataBinding: FragmentDetailBinding
 
     override fun onCreateView(
@@ -69,7 +71,7 @@ class DetailFragment : Fragment() {
                     Palette.from(resource) // Calling the Palette library
                         .generate() { palette ->
                             val intColor = palette?.lightMutedSwatch?.rgb ?: 0 // If is null, then 0
-                            dataBinding.animalLayout.setBackgroundColor(intColor)
+                            dataBinding.palette = AnimalPalette(intColor)
                         }
                 }
             })
