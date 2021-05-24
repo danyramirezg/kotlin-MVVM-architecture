@@ -16,6 +16,11 @@ import javax.inject.Inject
 
 class ListViewModel(application: Application): AndroidViewModel(application) {
 
+	constructor(application: Application, test: Boolean = true): this(application) {
+		injected = true
+	}
+
+
 	// Creating Mutable Live data Variables
 	val animals by lazy { MutableLiveData<List<Animal>>() }
 	val loadError by lazy { MutableLiveData<Boolean>()}
@@ -34,17 +39,23 @@ class ListViewModel(application: Application): AndroidViewModel(application) {
 	lateinit var prefs: SharedPreferencesHelper
 
 	private var invalidApiKey = false
+	private var injected = false
 
-	init {
-		// DaggerViewModelComponent.create().inject(this) -> doesn't work
-		// anymore because appModule needs an application
-		// and appModule is a injection Module in the viewModelComponent
-		// Instead we use builder()
+	fun inject() {
+		// inject only if it is false,
+		// it means inject Only if this is NOT a test
+		if (!injected) {
 
-		DaggerViewModelComponent.builder()
-			.appModule(AppModule(getApplication()))
-			.build()
-			.inject(this)
+			// DaggerViewModelComponent.create().inject(this) -> doesn't work
+			// anymore because appModule needs an application
+			// and appModule is a injection Module in the viewModelComponent
+			// Instead we use builder()
+
+			DaggerViewModelComponent.builder()
+				.appModule(AppModule(getApplication()))
+				.build()
+				.inject(this)
+		}
 	}
 
 	// Store the key into the sharedPreferences File, so
@@ -54,6 +65,7 @@ class ListViewModel(application: Application): AndroidViewModel(application) {
 	// the apiKey will be the same everytime we ask for that
 	// new list of animals
 	fun refresh() {
+		inject()
 		loading.value = true
 		invalidApiKey = false
 
@@ -69,6 +81,7 @@ class ListViewModel(application: Application): AndroidViewModel(application) {
 	// Hard refresh will ask for a new Key when doing a refresh layout
 	// basically refreshing the screen
 	fun hardRefresh() {
+		inject()
 		loading.value = true
 		getKey()
 	}
