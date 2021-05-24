@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dany.kotlin_mvvm_architecture.Util.SharedPreferencesHelper
+import com.dany.kotlin_mvvm_architecture.di.DaggerApiComponent
+import com.dany.kotlin_mvvm_architecture.di.DaggerViewModelComponent
 import com.dany.kotlin_mvvm_architecture.model.Animal
 import com.dany.kotlin_mvvm_architecture.model.AnimalApiService
 import com.dany.kotlin_mvvm_architecture.model.ApiKey
@@ -12,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 // This class is going make the connection between the model and the view
 class ListViewModel(application: Application) : AndroidViewModel(application) {
@@ -25,11 +28,21 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     val loading by lazy { MutableLiveData<Boolean>() }
 
     private val disposable = CompositeDisposable()
-    private val apiService = AnimalApiService()
+
+    @Inject
+    lateinit var apiService: AnimalApiService
 
     private val prefs = SharedPreferencesHelper(getApplication())
 
     private var invalidApiKey = false
+
+    init {
+
+    }
+
+    init {
+        DaggerViewModelComponent.create().inject(this)
+    }
 
     fun refresh() {
         loading.value = true
@@ -43,7 +56,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // Refresh our API key
-    fun hardRefresh(){
+    fun hardRefresh() {
         loading.value = true
         getKey()
     }
