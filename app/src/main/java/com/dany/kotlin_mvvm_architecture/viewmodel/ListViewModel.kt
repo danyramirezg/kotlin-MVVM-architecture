@@ -5,9 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dany.kotlin_mvvm_architecture.Util.SharedPreferencesHelper
-import com.dany.kotlin_mvvm_architecture.di.AppModule
-import com.dany.kotlin_mvvm_architecture.di.DaggerApiComponent
-import com.dany.kotlin_mvvm_architecture.di.DaggerViewModelComponent
+import com.dany.kotlin_mvvm_architecture.di.*
 import com.dany.kotlin_mvvm_architecture.model.Animal
 import com.dany.kotlin_mvvm_architecture.model.AnimalApiService
 import com.dany.kotlin_mvvm_architecture.model.ApiKey
@@ -34,13 +32,15 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var apiService: AnimalApiService
 
     @Inject
-    lateinit var prefs : SharedPreferencesHelper
+    @field:TypeOfContext(CONTEXT_APP)
+    lateinit var prefs: SharedPreferencesHelper
 
     private var invalidApiKey = false
 
 
     init {
-        DaggerViewModelComponent.builder().appModule(AppModule(getApplication())).build().inject(this)
+        DaggerViewModelComponent.builder().appModule(AppModule(getApplication())).build()
+            .inject(this)
     }
 
     fun refresh() {
