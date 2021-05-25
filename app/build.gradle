@@ -97,6 +97,7 @@ dependencies {
   kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
   // Mockito library for testing
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
   testImplementation "org.mockito:mockito-inline:$mockitoVersion"
   testImplementation "android.arch.core:core-testing:1.1.1"
   kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
