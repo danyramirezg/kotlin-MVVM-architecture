@@ -18,6 +18,10 @@ import javax.inject.Inject
 // This class is going make the connection between the model and the view
 class ListViewModel(application: Application) : AndroidViewModel(application) {
 
+    constructor(application: Application, test: Boolean = true) : this(application) {
+        injected = true
+    }
+
     // Lazy means that the system is not going to instantiate this live-data variable unless and,
     // when it is needed. If it never is used in the code, it is not created
     // LiveData: Is an observable that provides different values for whoever is listening
@@ -36,14 +40,18 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var prefs: SharedPreferencesHelper
 
     private var invalidApiKey = false
+    private var injected = false
 
 
-    init {
-        DaggerViewModelComponent.builder().appModule(AppModule(getApplication())).build()
-            .inject(this)
+    fun inject() {
+        if (!injected) {
+            DaggerViewModelComponent.builder().appModule(AppModule(getApplication())).build()
+                .inject(this)
+        }
     }
 
     fun refresh() {
+        inject()
         loading.value = true
         invalidApiKey = false
         val key = prefs.getApiKey()
@@ -56,6 +64,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     // Refresh our API key
     fun hardRefresh() {
+        inject()
         loading.value = true
         getKey()
     }
