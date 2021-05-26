@@ -70,7 +70,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun getAnimalsFailure(){
+    fun getAnimalsFailure() {
         Mockito.`when`(prefs.getApiKey()).thenReturn(key)
         val testSingle = Single.error<List<Animal>>(Throwable())
         val keySingle = Single.just(ApiKey("OK", key))
@@ -83,6 +83,45 @@ class ListViewModelTest {
         Assert.assertEquals(null, listViewModel.animals.value)
         Assert.assertEquals(false, listViewModel.loading.value)
         Assert.assertEquals(true, listViewModel.loadError.value)
+    }
+
+    @Test
+    fun getKeySuccess() {
+        Mockito.`when`(prefs.getApiKey()).thenReturn(null)
+
+        val apiKey = ApiKey("OK", key)
+        val keySingle = Single.just(apiKey)
+
+        Mockito.`when`(animalService.getApiKey()).thenReturn(keySingle)
+
+        val animal = Animal("cow", null, null, null, null, null, null)
+        val animalList = listOf(animal)
+
+        val testSingle = Single.just(animalList)
+        Mockito.`when`(animalService.getAnimals(key)).thenReturn(testSingle)
+
+        listViewModel.refresh()
+
+        Assert.assertEquals(1, listViewModel.animals.value?.size)
+        Assert.assertEquals(false, listViewModel.loadError.value)
+        Assert.assertEquals(false, listViewModel.loading.value)
+    }
+
+
+    @Test
+    fun getKeyFailure() {
+        Mockito.`when`(prefs.getApiKey()).thenReturn(null)
+
+        val keySingle: Single<ApiKey> = Single.error<ApiKey>(Throwable())
+
+        Mockito.`when`(animalService.getApiKey()).thenReturn(keySingle)
+
+        listViewModel.refresh()
+
+        Assert.assertEquals(null, listViewModel.animals.value)
+        Assert.assertEquals(false, listViewModel.loading.value)
+        Assert.assertEquals(true, listViewModel.loadError.value)
+
     }
 
 
