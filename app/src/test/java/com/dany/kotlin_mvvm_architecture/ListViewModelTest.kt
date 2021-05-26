@@ -8,6 +8,7 @@ import com.dany.kotlin_mvvm_architecture.di.DaggerViewModelComponent
 import com.dany.kotlin_mvvm_architecture.di.PrefsModule
 import com.dany.kotlin_mvvm_architecture.model.Animal
 import com.dany.kotlin_mvvm_architecture.model.AnimalApiService
+import com.dany.kotlin_mvvm_architecture.model.ApiKey
 import com.dany.kotlin_mvvm_architecture.viewmodel.ListViewModel
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -67,6 +68,23 @@ class ListViewModelTest {
         Assert.assertEquals(false, listViewModel.loadError.value)
         Assert.assertEquals(false, listViewModel.loading.value)
     }
+
+    @Test
+    fun getAnimalsFailure(){
+        Mockito.`when`(prefs.getApiKey()).thenReturn(key)
+        val testSingle = Single.error<List<Animal>>(Throwable())
+        val keySingle = Single.just(ApiKey("OK", key))
+
+        Mockito.`when`(animalService.getAnimals(key)).thenReturn(testSingle)
+        Mockito.`when`(animalService.getApiKey()).thenReturn(keySingle)
+
+        listViewModel.refresh()
+
+        Assert.assertEquals(null, listViewModel.animals.value)
+        Assert.assertEquals(false, listViewModel.loading.value)
+        Assert.assertEquals(true, listViewModel.loadError.value)
+    }
+
 
     // Setting up the test
     @Before
